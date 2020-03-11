@@ -10,7 +10,7 @@ public class Position {
 		this.row = row;
 		this.column = column;
 	}
-
+	
 
 	public Integer getRow() {
 		return row;
