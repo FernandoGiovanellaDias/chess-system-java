@@ -1,12 +1,16 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import chess.ChessMatch;
 import chess.ChessPosition;
 import chess.Chesspiece;
 import chess.Color;
+
 public class UI {
 
 	// https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
@@ -47,12 +51,14 @@ public class UI {
 			throw new InputMismatchException("Error reading ChessPosition. Valid values are from a1 to h8");
 		}
 	}
-	
-	public static void printMach(ChessMatch chessMatch) {
+
+	public static void printMach(ChessMatch chessMatch, List<Chesspiece> captured) {
 		printBoard(chessMatch.getpieces());
 		System.out.println();
-		System.out.println("Turn: "+ chessMatch.getTurn());
-		System.out.println("Waiting player: "+ chessMatch.getCurrentPlayer());
+		printCapturedPieces(captured);
+		System.out.println();
+		System.out.println("Turn: " + chessMatch.getTurn());
+		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
 	}
 
 	public static void printBoard(Chesspiece[][] pieces) {
@@ -66,7 +72,7 @@ public class UI {
 		}
 		System.out.println("  a b c d e f g h");
 	}
-	
+
 	public static void printBoard(Chesspiece[][] pieces, boolean[][] possibleMoves) {
 
 		for (int i = 0; i < pieces.length; i++) {
@@ -78,27 +84,42 @@ public class UI {
 		}
 		System.out.println("  a b c d e f g h");
 	}
-	
-	
 
 	private static void printPiece(Chesspiece piece, boolean background) {
-		
-		if(background) {
+
+		if (background) {
 			System.out.print(ANSI_BLUE_BACKGROUND);
 		}
-		
+
 		if (piece == null) {
-            System.out.print("-"+ ANSI_RESET);
-        }
-        else {
-            if (piece.getColor() == Color.WHITE) {
-                System.out.print(ANSI_WHITE + piece + ANSI_RESET);
-            }
-            else {
-                System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
-            }
-        }
-        System.out.print(" ");
+			System.out.print("-" + ANSI_RESET);
+		} else {
+			if (piece.getColor() == Color.WHITE) {
+				System.out.print(ANSI_WHITE + piece + ANSI_RESET);
+			} else {
+				System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
+			}
+		}
+		System.out.print(" ");
 
 	}
+
+	private static void printCapturedPieces(List<Chesspiece> captured) {
+		List<Chesspiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList());
+		List<Chesspiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList());
+		
+		System.out.println("Captured pieces");
+		System.out.println("WHITE: ");
+		System.out.println(ANSI_WHITE);
+		System.out.println(Arrays.toString(white.toArray()));
+		System.out.println(ANSI_RESET);
+		
+		System.out.println("Captured pieces");
+		System.out.println("BLACK: ");
+		System.out.println(ANSI_YELLOW);
+		System.out.println(Arrays.toString(black.toArray()));
+		System.out.println(ANSI_RESET);
+		
+	}
+
 }
