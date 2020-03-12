@@ -20,6 +20,10 @@ public abstract class Chesspiece extends Piece {
 			Chesspiece p = (Chesspiece)getBoard().piece(position);
 			return p != null && p.getColor() != color;
 	}
+		
+	public ChessPosition getChessPosition() {
+		return ChessPosition.fromPosition(position);
+	}
 
 	
 	
