@@ -68,25 +68,26 @@ public class ChessMatch {
 		validateSourcePosition(source);
 		validateTargetPosition(source, target);
 		Piece capturedPiece = makeMove(source, target);
-
+		
 		if (testCheck(currentPlayer)) {
 			undoMove(source, target, capturedPiece);
 			throw new ChessException("You can't put yourself in check");
 		}
-
+		
 		check = (testCheck(opponent(currentPlayer))) ? true : false;
-
 		if (testCheckMate(opponent(currentPlayer))) {
 			checkMate = true;
 		}
 		else {
 			nextTurn();
 		}
-		return (Chesspiece) capturedPiece;
+		
+		return (Chesspiece)capturedPiece;
 	}
 
 	public Piece makeMove(Position source, Position target) {
-		Piece p = board.removePiece(source);
+		Chesspiece p = (Chesspiece)board.removePiece(source);
+		p.increaseMoveCount();
 		Piece capturedPiece = board.removePiece(target);
 		board.placePiece(p, target);
 
@@ -98,7 +99,8 @@ public class ChessMatch {
 	}
 
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
-		Piece p = board.removePiece(target);
+		Chesspiece p = (Chesspiece)board.removePiece(target);
+		p.decreaseMoveCount();
 		board.placePiece(p, source);
 
 		if (capturedPiece != null) {
