@@ -2,10 +2,10 @@ package chess.pieces;
 
 import boardgame.Board;
 import boardgame.Position;
-import chess.Chesspiece;
+import chess.ChessPiece;
 import chess.Color;
 
-public class Queen extends Chesspiece {
+public class Queen extends ChessPiece {
 
 	public Queen(Board board, Color color) {
 		super(board, color);
